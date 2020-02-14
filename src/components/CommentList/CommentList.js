@@ -1,17 +1,28 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './CommentList.css';
 import { Comment } from '../';
 
-class CommentList extends Component {
-    render() {
-        return (
-            <ul className="CommentList">
-                <Comment />
-                <Comment />
-                <Comment />
-            </ul>
+
+const CommentList = ({ comments }) => {
+    const commentList = comments.map(
+        (comment, index) => (
+            <Comment
+                name={comment.name}
+                body={comment.body}
+                key={index}
+            />
         )
-    }
+    );
+
+    return (
+        <ul className="CommentList">
+            {commentList}
+        </ul>
+    )
+
 }
+
+
+
 
 export default CommentList;

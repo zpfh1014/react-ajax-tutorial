@@ -9,11 +9,25 @@ class PostContainer extends Component {
         this.fetchPostInfo(1);
     }
 
+    constructor(props){
+        super();
+
+        this.state = {
+            postId: 1,
+            fetching: false,
+            post : {
+                title : null,
+                body: null
+            },
+            comments : []
+        };
+    }
+
     fetchPostInfo = async ( postId ) => {
-        // const post = await service.getPost(postId);
-        // console.log(post);
-        // const comments = await service.getComments(postId);
-        // console.log(comments);
+
+        this.setState({
+            fetching: true
+        });
 
         const info = await Promise.all([
             service.getPost(postId),
@@ -21,61 +35,49 @@ class PostContainer extends Component {
         ]);
 
         console.log(info);
+
+        const { title, body } = info[0].data;
+        const comments = info[1].data;
+    
+        this.setState({
+            postId,
+            post : {
+                title,
+                body
+            },
+            comments,
+            fetching: false
+        });        
+    }
+
+    handleNavigateClick = (type) => {
+        const postId = this.state.postId;
+
+        if(type === 'NEXT') {
+            this.fetchPostInfo(postId+1);
+        } else {
+            this.fetchPostInfo(postId-1);
+        }
     }
 
     render() {
-        //const { posts } = this.state;
-        
-        return(
+        const {postId, fetching, post, comments} = this.state;
+
+        return (
             <PostWrapper>
-                <Navigate />
-                <Post />
+                <Navigate 
+                    postId={postId}
+                    disabled={fetching}
+                    onClick={this.handleNavigateClick}
+                />
+                <Post
+                    title={post.title}
+                    body={post.body}
+                    comments={comments}
+                />
             </PostWrapper>
-        )
+        );
     }
 }
 
 export default PostContainer;
-
-
-
-
-// class PostContainer extends Component {
-//     state = {}
-
-//     componentDidMount() {
-//         this._getPosts();
-//     }
-
-//     _getPosts = async() => {
-//         const posts = await this._callApi();
-//         this.setState({
-//             posts
-//         })
-//     }
-
-//     _callApi = () => {
-//         return fetch('https://jsonplaceholder.typicode.com/posts')
-//         .then(res => res.json())
-//         .then(json => json.data.posts)
-//         .chtch(err => console.log(err))
-//     }
-
-//     _renderPosts = () => {
-//         const posts = this.state.posts.map(post => {
-//             return (
-//                 <Navigate postId={post.postId} disabled={post.fetching} />
-//                 <Post title={post.title} body={post.body} comments={post.comments} />
-//             )
-//         })
-//         return posts;
-//     }
-
-//     render() {
-//         return(
-//             <PostWrapper >
-//                 {this.state.posts ? this._renderPosts() : 'Loding'}
-//             </PostWrapper>
-//         )
-//     }
-// }
