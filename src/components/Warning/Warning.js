@@ -11,7 +11,7 @@ class Warning extends Component {
 
     componentWillReceiveProps (nextProps) {
         if(this.props.visible && !nextProps.visible) {
-
+           
            this.setState({
                closing: true
            });

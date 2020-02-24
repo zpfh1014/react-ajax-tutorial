@@ -50,8 +50,6 @@ class PostContainer extends Component {
                 service.getComments(postId)
             ]);
     
-            console.log(info);
-    
             const { title, body } = info[0].data;
             const comments = info[1].data;
         

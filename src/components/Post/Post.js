@@ -52,7 +52,9 @@ class Post extends Component {
         const { title, body, comments } = this.state.postInfo;
         const { animate, direction } = this.state;
 
-        const animation = animate ? (direction === 'left' ? 'bounceOutLeft' : 'bounceOutRight') : (direction === 'left' ? 'bounceInRight' : 'bounceInLeft');
+        const animation = animate 
+                          ? (direction==='left' ? 'bounceOutLeft' : 'bounceOutRight')
+                          : (direction==='left' ? 'bounceInRight' : 'bounceInLeft');
         
         if( title === null ) return null;
 
@@ -62,13 +64,10 @@ class Post extends Component {
                 <p>
                     {body}
                 </p>
-                <CommentList comments={comments} />
+                <CommentList comments={comments}/>
             </div>
         );
-    }    
-
+    }
 }
-
-
 
 export default Post;
